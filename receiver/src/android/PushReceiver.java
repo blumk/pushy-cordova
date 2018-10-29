@@ -15,29 +15,27 @@ public class PushReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         // Notification title and text
-        String notificationTitle = getAppName(context);
-        String notificationText = "";
-
-        // Attempt to extract the notification text from the "message" property of the data payload
-        if (intent.getStringExtra("message") != null) {
-            notificationText = intent.getStringExtra("message");
-        }
-
+        String notificationTitle = intent.getStringExtra("title");
+        String notificationText = intent.getStringExtra("message") != null? intent.getStringExtra("message"): "";     
+              
         // Prepare a notification with vibration and sound
         Notification.Builder builder = new Notification.Builder(context)
                 .setAutoCancel(true)
                 .setContentTitle(notificationTitle)
                 .setContentText(notificationText)
-                .setVibrate(new long[]{0, 400, 250, 400})
-                .setSmallIcon(getNotificationIcon(context))
+                .setVibrate(new long[] { 0, 400, 250, 400 })
+                //.setSmallIcon(getNotificationIcon(context))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentIntent(getMainActivityPendingIntent(context));
 
         // Get an instance of the NotificationManager service
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context
+                .getSystemService(context.NOTIFICATION_SERVICE);
 
         // Automatically configure a Notification Channel for devices running Android O+
         Pushy.setNotificationChannel(builder, context);
+
+        Log.e(PushyLogging.TAG, "Chegou notificação!");
 
         // Build the notification and display it
         notificationManager.notify(1, builder.build());
