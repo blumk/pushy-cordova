@@ -8,7 +8,8 @@ import android.content.res.Resources;
 import android.media.RingtoneManager;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
-
+import me.pushy.sdk.config.PushyLogging;
+import android.util.Log;
 import me.pushy.sdk.cordova.internal.util.PushyPersistence;
 
 public class PushReceiver extends BroadcastReceiver {
@@ -90,3 +91,4 @@ public class PushReceiver extends BroadcastReceiver {
         return PendingIntent.getActivity(context, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
+
