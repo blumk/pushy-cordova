@@ -2,7 +2,9 @@ package me.pushy.sdk.cordova.internal;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
@@ -24,6 +26,7 @@ import me.pushy.sdk.util.exceptions.PushyException;
 public class PushyPlugin extends CordovaPlugin {
     private static PushyPlugin mInstance;
     private CallbackContext mNotificationHandler;
+    private static boolean gForeground = false;
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -31,6 +34,7 @@ public class PushyPlugin extends CordovaPlugin {
 
         // Store plugin instance
         mInstance = this;
+        gForeground = true;
     }
 
     @Override
@@ -241,5 +245,34 @@ public class PushyPlugin extends CordovaPlugin {
             // Reject the callback with the exception
             callback.error(exc.getMessage());
         }
+    }
+
+    private void clearAllNotifications() {
+        final NotificationManager notificationManager = (NotificationManager) cordova.getActivity()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+    }
+
+    @Override
+    public void onPause(boolean multitasking) {
+        super.onPause(multitasking);
+        gForeground = false;
+        clearAllNotifications();
+    }
+
+    @Override
+    public void onResume(boolean multitasking) {
+        super.onResume(multitasking);
+        gForeground = true;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        gForeground = false;
+    }
+
+    public static boolean isInForeground() {
+        return gForeground;
     }
 }

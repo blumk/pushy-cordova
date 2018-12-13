@@ -10,6 +10,7 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import me.pushy.sdk.config.PushyLogging;
 import android.util.Log;
+import me.pushy.sdk.cordova.internal.PushyPlugin;
 import me.pushy.sdk.cordova.internal.util.PushyPersistence;
 
 public class PushReceiver extends BroadcastReceiver {
@@ -25,7 +26,7 @@ public class PushReceiver extends BroadcastReceiver {
                 .setContentTitle(notificationTitle)
                 .setContentText(notificationText)
                 .setVibrate(new long[] { 0, 400, 250, 400 })
-                //.setSmallIcon(getNotificationIcon(context))
+                .setSmallIcon(getNotificationIcon(context))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentIntent(getMainActivityPendingIntent(context));
 
@@ -39,7 +40,9 @@ public class PushReceiver extends BroadcastReceiver {
         Log.e(PushyLogging.TAG, "Chegou notificação!");
 
         // Build the notification and display it
-        notificationManager.notify(1, builder.build());
+        if(!PushyPlugin.isInForeground()) {
+            notificationManager.notify(1, builder.build());
+        }
     }
 
     private int getNotificationIcon(Context context) {
