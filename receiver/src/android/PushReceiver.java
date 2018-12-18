@@ -27,6 +27,7 @@ public class PushReceiver extends BroadcastReceiver {
                 .setContentText(notificationText)
                 .setVibrate(new long[] { 0, 400, 250, 400 })
                 .setSmallIcon(getNotificationIcon(context))
+                .setColor(Color.parseColor("#040147"))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentIntent(getMainActivityPendingIntent(context));
 
@@ -37,7 +38,7 @@ public class PushReceiver extends BroadcastReceiver {
         // Automatically configure a Notification Channel for devices running Android O+
         Pushy.setNotificationChannel(builder, context);
 
-        Log.e(PushyLogging.TAG, "Chegou notificação!");
+        Log.e(PushyLogging.TAG, "Notification arrived!");
 
         // Build the notification and display it
         if(!PushyPlugin.isInForeground()) {
