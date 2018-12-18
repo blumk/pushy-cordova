@@ -12,6 +12,7 @@ import me.pushy.sdk.config.PushyLogging;
 import android.util.Log;
 import me.pushy.sdk.cordova.internal.PushyPlugin;
 import me.pushy.sdk.cordova.internal.util.PushyPersistence;
+import android.graphics.Color;
 
 public class PushReceiver extends BroadcastReceiver {
     @Override
