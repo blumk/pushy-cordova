@@ -155,6 +155,12 @@ public class PushyPlugin extends CordovaPlugin {
     }
 
     public static void onNotificationReceived(JSONObject notification, Context context) {
+        // Enrich notification with "receivedInBackground" property
+        try {
+          notification.put("receivedInBackground", !gForeground);
+        } catch (JSONException e) {
+          Log.d(PushyLogging.TAG, "Failed to set receivedInBackground property on notification", e);
+        }
         // Activity is not running or no notification handler defined?
         if (mInstance == null || !mInstance.isActivityRunning() || mInstance.mNotificationHandler == null) {
             // Store notification JSON in SharedPreferences and deliver it when app is opened

@@ -405,7 +405,7 @@ public class Pushy : NSObject {
     // Device received notification
     @objc public func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         var augmentedUserInfo: [AnyHashable: Any] = [
-            AnyHashable("notificationTapped"): (application.applicationState == .inactive)
+            AnyHashable("receivedInBackground"): (application.applicationState == .inactive)
         ]
         
         augmentedUserInfo.merge(userInfo) { (current, _) in current }
